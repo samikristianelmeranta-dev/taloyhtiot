@@ -169,6 +169,45 @@ textarea { min-height: 90px; resize: vertical; }
 .log { font-family: var(--f-mono); font-size: .8rem; display: flex; flex-direction: column; gap: 4px; }
 .log div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 10px; }
 
+/* Välilehdet */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tabs button { border: 0; background: transparent; padding: 8px 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs .count { font-family: var(--f-mono); font-size: .75rem; margin-left: 4px; }
+
+/* Hankekansio */
+.folder { display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 1100px) { .folder { grid-template-columns: minmax(0, 1fr); } }
+.progress { height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--ink); border-radius: 99px; }
+.phase { display: flex; flex-direction: column; gap: 2px; }
+.phase h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 6px 0 4px; display: flex; justify-content: space-between; }
+.task { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; padding: 6px 8px; border-radius: 6px; font-size: .9rem; text-align: left; border: 0; background: transparent; width: 100%; }
+button.task:hover { background: var(--surface-2); }
+.task[aria-current="true"] { background: var(--ink-soft); }
+.task .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); margin-top: 3px; display: grid; place-items: center; }
+.task.done .dot { background: var(--ok); border-color: var(--ok); }
+.task.done .dot::after { content: ""; width: 6px; height: 3px; border: solid var(--surface); border-width: 0 0 2px 2px; transform: rotate(-45deg) translate(1px, -1px); }
+.task.now .dot { border-color: var(--ink); box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 8px var(--ink); }
+.task .sub { display: block; font-size: .78rem; color: var(--muted); }
+.task .doclink { color: var(--ink); font-weight: 600; }
+.task.done .lbl { color: var(--muted); }
+
+.paper { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; box-shadow: var(--shadow); padding: 34px 40px 40px; max-width: 760px; width: 100%; font-size: .95rem; line-height: 1.6; display: flex; flex-direction: column; gap: 14px; }
+@media (max-width: 600px) { .paper { padding: 22px 18px; } }
+.paper-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; border-bottom: 1px solid var(--line); padding-bottom: 12px; font-size: .85rem; }
+.paper-head .doc-title { font-family: var(--f-display); font-size: 1.35rem; font-weight: 700; grid-column: 1 / -1; margin-top: 6px; }
+.paper h4 { font-family: var(--f-display); font-size: 1rem; margin: 6px 0 0; }
+.paper ol, .paper ul { margin: 0; padding-left: 22px; }
+.paper table { min-width: 0; font-size: .88rem; }
+.paper [contenteditable]:focus { outline: 1px dashed var(--ink); outline-offset: 6px; }
+.fill { background: var(--ink-soft); border-bottom: 1px dashed var(--ink); padding: 0 2px; border-radius: 2px; }
+.fill.todo { background: var(--warn-soft); border-bottom-color: var(--warn); color: var(--warn); }
+.doc-tools { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .8rem; color: var(--muted); }
+.callout { display: flex; gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--warn-soft); color: var(--fg); font-size: .875rem; }
+.callout strong { color: var(--warn); }
+
 /* Ohjattu luonti */
 .wizard-steps { display: flex; flex-wrap: wrap; gap: 6px; }
 .wizard-steps span { font-size: .8rem; padding: 4px 10px; border-radius: 99px; background: var(--surface-2); color: var(--muted); font-weight: 600; }
@@ -242,7 +281,7 @@ const qa = [
   { q: 'Kuuluuko ikkunapenkkien uusiminen urakkaan?', a: 'Kuuluu. Lisätty urakkaohjelman kohtaan 4.3.', when: '2.11.2026' },
 ];
 
-const S = { role: 'board', after: false, tender: 1, view: 'detail', myBid: true, bidDraft: { price: '412000', start: '2027-05-03', end: '2027-08-13', warranty: '36', note: bids[0].note, refs: 'As Oy Mäntykoti 2025, As Oy Sorsapuisto 2024', tv: true }, chosen: null, confirming: null, memo: false, toast: '', wizStep: 0, wizType: 'Ikkunaremontti', asked: false };
+const S = { role: 'board', after: false, tender: 1, view: 'folder', doc: 'urakka', myBid: true, bidDraft: { price: '412000', start: '2027-05-03', end: '2027-08-13', warranty: '36', note: bids[0].note, refs: 'As Oy Mäntykoti 2025, As Oy Sorsapuisto 2024', tv: true }, chosen: null, confirming: null, memo: false, toast: '', wizStep: 0, wizType: 'Ikkunaremontti', asked: false };
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const eur = n => new Intl.NumberFormat('fi-FI', { maximumFractionDigits: 0 }).format(Math.round(n)) + ' €';
@@ -400,6 +439,137 @@ function wizard() {
     <div class="actions"><button class="btn" data-act="wprev" ${S.wizStep === 0 ? 'disabled' : ''}>← Edellinen</button>${S.wizStep < 3 ? '<button class="btn primary" data-act="wnext">Seuraava →</button>' : '<button class="btn" data-act="back">Tallenna luonnokseksi</button><button class="btn primary" data-act="back">Julkaise kilpailutus</button>'}</div></section>`;
 }
 
+/* ---------- Hankekansio ---------- */
+const F = (v, todo) => `<span class="fill${todo ? ' todo' : ''}">${v}</span>`;
+const DOCS = {
+  hanke: 'Hankesuunnitelma', osakas: 'Osakastiedote', urakka: 'Urakkaohjelma', tyoselitys: 'Työselitys',
+  sopimus: 'Urakkasopimus', asukas: 'Asukastiedote', vastaanotto: 'Vastaanottotarkastuksen pöytäkirja',
+};
+
+function folderTasks() {
+  const opened = S.after, chosen = !!S.chosen, cb = chosen ? bids.find(b => b.id === S.chosen) : null;
+  const st = (done, now) => done ? 'done' : now ? 'now' : '';
+  const guaranteeEnd = cb ? `Takuu ${cb.warranty} kk, päättyy ${cb.end.replace(/\d{4}$/, y => String(+y + cb.warranty / 12))}` : 'Takuuaika valitun tarjouksen mukaan';
+  return [
+    ['Valmistelu', [
+      ['Kuntoarvio ja PTS liitetty', 'done', null, 'Kuntoarvio 2025.pdf'],
+      ['Hankesuunnitelma', 'done', 'hanke', 'Hallitus hyväksyi 2.9.2026'],
+      ['Osakastiedote', 'done', 'osakas', 'Lähetetty osakkaille 4.9.2026'],
+      ['Yhtiökokous: kilpailutuspäätös', 'done', null, 'Ylimääräinen yhtiökokous 29.9.2026'],
+    ]],
+    ['Kilpailutus', [
+      ['Urakkaohjelma', 'done', 'urakka', 'Tarjouspyynnön liite'],
+      ['Työselitys', 'done', 'tyoselitys', 'Ikkunat ja parvekeovet'],
+      ['Kilpailutus julkaistu', 'done', null, '13.10.2026 · 27 urakoitsijaa sai ilmoituksen'],
+      ['Urakoitsijoiden kysymyksiin vastattu', st(opened, !opened), null, opened ? '3 kysymystä, kaikki vastattu' : '1 kysymys odottaa vastausta'],
+      ['Tarjoukset avautuvat', st(opened, false), null, DEADLINE],
+      ['Vertailu ja yhteenveto hallitukselle', st(chosen, opened && !chosen), null, opened ? '3 tarjousta vertailussa' : 'Valmistuu tarjousten avauduttua'],
+      ['Päätös urakoitsijasta', st(chosen, opened && !chosen), null, cb ? `${cb.co}` : 'Hallitus tai yhtiökokous päättää'],
+    ]],
+    ['Toteutus', [
+      ['Tilaajavastuuselvitykset tarkistettu', st(false, chosen), null, 'Ennen sopimuksen allekirjoitusta'],
+      ['Urakkasopimus', st(false, chosen), 'sopimus', 'Täytetään valitun tarjouksen tiedoilla'],
+      ['Asukastiedote', st(false, chosen), 'asukas', 'Lähetetään viimeistään 2 viikkoa ennen töiden alkua'],
+      ['Aloituskokous', '', null, 'Urakoitsija, valvoja ja isännöitsijä'],
+      ['Rakentamisilmoitukset Verolle', '', null, 'Muistutus kuukausittain urakan ajan'],
+    ]],
+    ['Vastaanotto ja takuu', [
+      ['Vastaanottotarkastus', '', 'vastaanotto', 'Pöytäkirjapohja ja virhelista'],
+      ['Takuutarkastus', '', null, guaranteeEnd],
+      ['Tiedot kunnossapitohistoriaan', '', null, 'Isännöitsijä vie tiedot huoneistotietojärjestelmään'],
+    ]],
+  ];
+}
+
+function folderView(t) {
+  const phases = folderTasks();
+  const all = phases.flatMap(p => p[1]), done = all.filter(x => x[1] === 'done').length;
+  const list = phases.map(([name, tasks]) => `<div class="phase"><h3><span>${name}</span><span class="num">${tasks.filter(x => x[1] === 'done').length}/${tasks.length}</span></h3>
+    ${tasks.map(([lbl, st, doc, sub]) => {
+      const inner = `<span class="dot"></span><span><span class="lbl">${esc(lbl)}</span>${doc ? ' <span class="doclink">· avaa</span>' : ''}<span class="sub">${esc(sub)}</span></span>`;
+      return doc ? `<button type="button" class="task ${st}" data-doc="${doc}" aria-current="${S.doc === doc}">${inner}</button>` : `<div class="task ${st}">${inner}</div>`;
+    }).join('')}</div>`).join('');
+
+  return `<section class="panel section">
+    <div class="head-row"><div><p class="eyebrow">Hankekansio · ${esc(t.company)}</p><h1>${esc(t.title)}</h1></div><span class="small muted num">${done}/${all.length} tehtävää valmiina</span></div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${all.length}" aria-valuenow="${done}"><span style="width:${Math.round(done / all.length * 100)}%"></span></div>
+    <div class="folder"><nav aria-label="Hankkeen vaiheet">${list}</nav>
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+        <div class="doc-tools"><div class="legend"><span>${F('Korostettu')} täytetty kilpailutuksen tiedoista</span><span>${F('Keltainen', true)} täydentyy myöhemmin</span></div>
+          <div class="actions"><button class="btn small" disabled title="Valmiissa palvelussa">Lataa PDF</button><button class="btn small" disabled title="Valmiissa palvelussa">Lataa Word</button></div></div>
+        ${docView(t)}
+        <div class="callout"><span><strong>Vastuuraja.</strong> Asiakirjat ovat pohjia, eivät suunnittelijan suunnitelmia. Ikkunaremontissa pohjat yleensä riittävät. Tarkista kunnan rakennusvalvonnasta, tarvitaanko lupa tai ilmoitus, jos julkisivun ulkonäkö muuttuu. Julkisivu-, parveke- ja putkiremonteissa tarvitaan aina suunnittelija ja valvoja.</span></div>
+      </div></div>
+  </section>`;
+}
+
+function paper(title, no, body) {
+  return `<article class="paper">
+    <div class="paper-head"><span><strong>As Oy Koivukallion Rinne</strong><br>Y-tunnus 0123456-7</span><span style="text-align:right">${no}<br>Päiväys 13.10.2026</span>
+      <span class="doc-title">${title}</span></div>
+    <div contenteditable="true" spellcheck="false" style="display:flex;flex-direction:column;gap:12px" aria-label="${esc(title)}, muokattava teksti">${body}</div>
+    <p class="small muted" contenteditable="false">Voit muokata tekstiä suoraan. Esikatselussa muutokset eivät tallennu.</p></article>`;
+}
+
+function docView(t) {
+  const cb = S.chosen ? bids.find(b => b.id === S.chosen) : null;
+  const co = cb ? F(esc(cb.co)) : F('[urakoitsija valitaan tarjousten avauduttua]', true);
+  if (S.doc === 'urakka') return paper('Urakkaohjelma', '1 (2)', `
+    <h4>1. Tilaaja ja kohde</h4>
+    <p>Tilaaja on ${F('As Oy Koivukallion Rinne')} (${F('0123456-7')}), ${F('Koivukalliontie 14, 01360 Vantaa')}. Tilaajaa edustaa isännöitsijä ${F('Mari Virtanen')}. Kohteessa on ${F('3 porrasta ja 48 asuntoa')}, rakennusvuosi ${F('1978')}.</p>
+    <h4>2. Urakan laajuus</h4>
+    <p>Urakkaan kuuluu ${F('212 ikkunan ja 48 parvekeoven')} uusiminen työselityksen mukaisesti: vanhojen ikkunoiden purku ja kierrätys, uusien asennus, tiivistys, ikkunapenkkien uusiminen sekä sisä- ja ulkopuoliset listoitukset ja pellitykset.</p>
+    <h4>3. Urakkamuoto ja sopimusehdot</h4>
+    <p>Kokonaishintainen urakka. Sopimukseen sovelletaan rakennusurakan yleisiä sopimusehtoja YSE 1998.</p>
+    <h4>4. Aikataulu</h4>
+    <p>Työt alkavat aikaisintaan ${F('1.5.2027')} ja ovat valmiit viimeistään ${F('31.8.2027')}. Työt tehdään porras kerrallaan. Huoneistossa työ saa kestää enintään kaksi työpäivää.</p>
+    <h4>5. Maksuerät, vakuudet ja takuu</h4>
+    <p>Maksut työvaiheiden mukaisen maksuerätaulukon perusteella. Viimeinen erä, vähintään 10 % urakkahinnasta, maksetaan hyväksytyn vastaanoton jälkeen. Rakennusaikainen vakuus 10 % ja takuuajan vakuus 2 % urakkahinnasta. Takuuaika vähintään 24 kuukautta tai tarjouksessa ilmoitettu pidempi aika.</p>
+    <h4>6. Tilaajavastuu</h4>
+    <p>Urakoitsija toimittaa tilaajavastuulain mukaiset selvitykset ennen urakkasopimuksen allekirjoittamista ja pitää ne ajan tasalla urakan ajan.</p>
+    <h4>7. Tarjousten vertailu</h4>
+    <p>Tarjouksista valitaan kokonaistaloudellisesti edullisin. Painotukset: hinta ${F('70 %')}, takuuaika ${F('10 %')}, aikataulu ${F('10 %')}, referenssit ${F('10 %')}.</p>
+    <h4>8. Tarjousten jättäminen</h4>
+    <p>Tarjoukset jätetään Sinetti-palvelussa viimeistään ${F(DEADLINE)}. Kysymykset esitetään palvelussa, ja vastaukset näkyvät kaikille tarjoajille.</p>
+    <h4>9. Liitteet</h4>
+    <ol><li>${F('Kuntoarvio 2025')}</li><li>${F('Ikkunakaaviot A–C')}</li><li>Työselitys</li><li>Tarjouslomake</li></ol>`);
+
+  if (S.doc === 'asukas') return paper('Asukastiedote: ikkunaremontti alkaa', '1 (1)', `
+    <p>Hyvä asukas,</p>
+    <p>taloyhtiössämme uusitaan kaikki ikkunat ja parvekeovet. Urakoitsijana toimii ${co}. Työt tehdään porras kerrallaan alla olevan aikataulun mukaan.</p>
+    <div class="table-wrap"><table><thead><tr><th>Porras</th><th>Työviikot</th><th>Huoneistokohtainen aika</th></tr></thead><tbody>
+      <tr><td>A</td><td style="white-space:nowrap">${cb ? F('viikot 19–21') : F('[aikataulu]', true)}</td><td rowspan="3">Saat oman päivämäärän lappuna oveen viimeistään viikkoa ennen.</td></tr>
+      <tr><td>B</td><td style="white-space:nowrap">${cb ? F('viikot 22–24') : F('[aikataulu]', true)}</td></tr>
+      <tr><td>C</td><td style="white-space:nowrap">${cb ? F('viikot 25–27') : F('[aikataulu]', true)}</td></tr></tbody></table></div>
+    <h4>Mitä sinun pitää tehdä</h4>
+    <ul><li>Siirrä huonekalut noin 1,5 metrin päähän ikkunoista.</li><li>Irrota verhot, kaihtimet ja ikkunalaudoilla olevat tavarat.</li><li>Suojaa herkät tavarat pölyltä.</li><li>Jos et ole kotona, toimita avain isännöitsijälle. Kerro lemmikeistä etukäteen.</li></ul>
+    <h4>Työpäivän aikana</h4>
+    <p>Työt tehdään arkisin klo 7–16. Asunnossa voi olla kylmää ja meluisaa muutaman tunnin ajan, kun ikkuna on poissa.</p>
+    <h4>Yhteystiedot</h4>
+    <p>Vastaava työnjohtaja: ${cb ? F('[nimi ja puhelin sopimuksesta]', true) : F('[täydentyy sopimuksesta]', true)}<br>Isännöitsijä: ${F('Mari Virtanen')}</p>
+    <p>Ystävällisin terveisin<br>Hallitus</p>`);
+
+  if (S.doc === 'hanke') return paper('Hankesuunnitelma', '1 (2)', `
+    <h4>Tausta</h4>
+    <p>Kuntoarvion ${F('2025')} mukaan ikkunat ja parvekeovet ovat alkuperäiset vuodelta ${F('1978')}. Puitteissa on lahovaurioita, ja tiivisteet ovat käyttöikänsä lopussa. Uusiminen on kunnossapitosuunnitelmassa vuosille ${F('2026–2027')}.</p>
+    <h4>Tavoitteet</h4>
+    <ul><li>Uudet ikkunat ja parvekeovet, U-arvo enintään ${F('1,0')}</li><li>Pienempi lämmitysenergian kulutus ja vedottomammat asunnot</li><li>Huoneistossa työ enintään kaksi työpäivää</li></ul>
+    <h4>Kustannusarvio</h4>
+    <p>${F('380 000–460 000 €')} alv 0 %, eli ${F('476 900–577 300 €')} sis. alv 25,5 %. Asuntoa kohden noin ${F('9 900–12 000 €')}, jaetaan yhtiöjärjestyksen mukaisesti osakkeiden perusteella.</p>
+    ${S.after ? `<p><strong>Tarjousten perusteella:</strong> ${F('386 500–449 900 €')} alv 0 %. Edullisin tarjous alittaa arvion ylärajan.</p>` : ''}
+    <h4>Rahoitus</h4>
+    <p>Taloyhtiö ottaa ${F('15 vuoden')} lainan, jonka lyhennykset katetaan rahoitusvastikkeella. Osakas voi maksaa osuutensa kerralla ennen lainan nostoa.</p>
+    <h4>Päätöksenteko ja aikataulu</h4>
+    <ol><li>Osakkaille tiedotetaan ja heille varataan tilaisuus esittää näkemyksensä.</li><li>Yhtiökokous päättää kilpailutuksesta.</li><li>Kilpailutus Sinetti-palvelussa, tarjoukset ${F(DEADLINE)}.</li><li>Hallitus tai yhtiökokous valitsee urakoitsijan.</li><li>Työt ${F('touko–elokuu 2027')}.</li></ol>`);
+
+  const desc = { osakas: 'Kertoo osakkaille suunnitellusta remontista, kustannusarviosta ja vastikevaikutuksesta sekä siitä, miten ja mihin mennessä osakas voi esittää näkemyksensä.',
+    tyoselitys: 'Tekniset vaatimukset: ikkunatyyppi, U-arvo, lasitus, helat, ääneneristys, purku, liittymät ja pellitykset. Pohja on ikkunaremonttia varten tarkistettu.',
+    sopimus: 'Urakkasopimus YSE 1998 -ehdoin. Hinta, aikataulu, takuu ja maksuerät täyttyvät valitusta tarjouksesta.',
+    vastaanotto: 'Pöytäkirja vastaanottotarkastukseen: osapuolet, tarkastetut huoneistot, virheet ja puutteet korjausaikoineen sekä takuuajan alkaminen.' };
+  return `<article class="paper"><div class="paper-head"><span><strong>As Oy Koivukallion Rinne</strong></span><span></span><span class="doc-title">${esc(DOCS[S.doc])}</span></div>
+    <p>${esc(desc[S.doc])}</p><p class="small muted">Esikatselussa on täytettynä kolme asiakirjaa: hankesuunnitelma, urakkaohjelma ja asukastiedote. Valitse jokin niistä vasemmalta.</p></article>`;
+}
+
 /* ---------- Urakoitsija ---------- */
 function contractorView() {
   const t = tenders[0], d = S.bidDraft, p = parseFloat(String(d.price).replace(/\s/g, '').replace(',', '.')) || 0;
@@ -462,7 +632,14 @@ function render() {
   renderSide();
   const t = tenders.find(x => x.id === S.tender);
   const main = document.getElementById('main');
-  if (S.role === 'board') main.innerHTML = S.view === 'new' ? wizard() : S.view === 'compare' && t.status === 'live' ? compareView(t) : boardDetail(t);
+  if (S.role === 'board') {
+    if (S.view === 'new') { main.innerHTML = wizard(); return; }
+    if (t.status !== 'live') { main.innerHTML = boardDetail(t); return; }
+    const tabs = [['detail', 'Kilpailutus'], ['compare', 'Vertailu'], ['folder', 'Hankekansio']];
+    const done = folderTasks().flatMap(p => p[1]).filter(x => x[1] === 'done').length;
+    main.innerHTML = `<div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" data-tab="${k}" aria-selected="${S.view === k}">${l}${k === 'folder' ? `<span class="count">${done}/19</span>` : ''}</button>`).join('')}</div>`
+      + (S.view === 'compare' ? compareView(t) : S.view === 'folder' ? folderView(t) : boardDetail(t));
+  }
   else if (S.role === 'contractor') main.innerHTML = contractorView();
   else main.innerHTML = adminView();
 }
@@ -479,6 +656,8 @@ document.addEventListener('click', e => {
   if (b.dataset.after !== undefined) { readBid(); S.after = b.dataset.after === '1'; S.toast = ''; S.confirming = null; if (!S.after) { S.chosen = null; S.memo = false; } return render(); }
   if (b.dataset.tender) { S.tender = +b.dataset.tender; S.view = 'detail'; S.toast = ''; return render(); }
   if (b.dataset.choose) { S.confirming = b.dataset.choose; return render(); }
+  if (b.dataset.tab) { S.view = b.dataset.tab; S.toast = ''; return render(); }
+  if (b.dataset.doc) { S.doc = b.dataset.doc; return render(); }
   if (b.dataset.wtype) { S.wizType = b.dataset.wtype; return render(); }
   const act = b.dataset.act;
   const acts = {
