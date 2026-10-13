@@ -19,6 +19,7 @@ myöhemmin siirtää omaksi sovelluksekseen (ks. [docs/ARKKITEHTUURI.md](docs/AR
 | `tests/` | Yksikkötestit (ajetaan ilman WordPressiä) |
 | `docs/VAATIMUKSET.md` | Vaatimusmäärittely |
 | `docs/ARKKITEHTUURI.md` | Rakenne, säännöt ja REST-rajapinta |
+| `docs/esikatselu/index.html` | Klikattava esikatselu päänäkymistä (avaa selaimessa) |
 
 ## Kehitys
 
